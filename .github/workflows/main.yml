@@ -31,9 +31,13 @@ jobs:
 
       - name: Check pmtu
         run: |
-          apt-get update
-          apt-get install iputils-tracepath
+          sudo apt-get update
+          sudo apt-get install iputils-tracepath
           tracepath -n dev-698520.okta.com
+
+      - name: Check pmtu from Docker
+        run: docker run node:12 bash -c "apt-get update && apt-get install iputils-tracepath && tracepath -n dev-698520.okta.com"
+
 
       - name: Attempt to curl Okta subdomain 100 times
         run:  docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done"
