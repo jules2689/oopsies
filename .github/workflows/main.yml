@@ -8,14 +8,20 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Print /lib/systemd/system/docker.service
-        run: sudo cat /lib/systemd/system/docker.service
-
       - name: Patch docker MTU
-        run: |
-          sudo sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd\:\/\//ExecStart=\/usr\/bin\/dockerd --mtu 1400 -H fd\:\/\//' /lib/systemd/system/docker.service
-          sudo systemctl daemon-reload
-          sudo service docker restart
+        run: sudo sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd\:\/\//ExecStart=\/usr\/bin\/dockerd --mtu 1400 -H fd\:\/\//' /lib/systemd/system/docker.service
 
-      - name: Print /lib/systemd/system/docker.service
-        run: sudo cat /lib/systemd/system/docker.service
+      - name: daemon-reload
+        run: sudo systemctl daemon-reload
+
+      - name: Restart Docker
+        run: sudo service docker restart
+
+      - name: Attempt to curl Google 100 times
+        run: docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl https://google.com > /dev/null ; done"
+
+      - name: Attempt to curl Okta 100 times
+        run: docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl https://okta.com > /dev/null ; done"
+
+      - name: Attempt to curl Okta subdomain 100 times
+        run: docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done"
