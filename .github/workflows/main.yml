@@ -13,7 +13,7 @@ jobs:
 
       - name: Patch docker MTU
         run: |
-          sudo sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd\:\/\/ --containerd=\/run\/containerd\/containerd.sock/ExecStart=\/usr\/bin\/dockerd --mtu 1400 -H fd\:\/\/ --containerd=\/run\/containerd\/containerd.sock/g' /lib/systemd/system/docker.service
+          sudo sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd\:\/\//ExecStart=\/usr\/bin\/dockerd --mtu 1400 -H fd\:\/\//' /lib/systemd/system/docker.service
           sudo systemctl daemon-reload
           sudo service docker restart
 
