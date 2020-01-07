@@ -9,12 +9,11 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Attempt to curl Google 100 times
-        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://google.com > /dev/null ; done"
+        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl -v https://google.com > /dev/null ; done"
 
       - name: Attempt to curl Okta 100 times
-        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://okta.com > /dev/null ; done"
+        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl -v https://okta.com > /dev/null ; done"
 
 
       - name: Attempt to curl Okta subdomain 100 times
-        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done"
-
+        run: docker run node:12 bash -c "for ((i=1;i<=100;i++)); do curl -v https://dev-698520.okta.com > /dev/null ; done"
