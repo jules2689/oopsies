@@ -8,6 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Check pmtu from Docker (before restart)
+        run: docker run node:12 bash -c "apt-get update && apt-get install iputils-tracepath && tracepath -n dev-698520.okta.com"
+
+
       - name: Check docker process
         run: ps aux | grep docker
 
