@@ -8,12 +8,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Attempt to curl Google 100 times
-        run: docker run --network host node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://google.com > /dev/null ; done"
+      - name: Print /lib/systemd/system/docker.service
+        run: sudo cat /lib/systemd/system/docker.service
 
-      - name: Attempt to curl Okta 100 times
-        run: docker run --network host node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://okta.com > /dev/null ; done"
+      - name: Patch docker MTU
+        run: |
+          sudo sed -i 's/ExecStart=\/usr\/bin\/dockerd -H fd\:\/\/ --containerd=\/run\/containerd\/containerd.sock/ExecStart=\/usr\/bin\/dockerd --mtu 1400 -H fd\:\/\/ --containerd=\/run\/containerd\/containerd.sock/g' /lib/systemd/system/docker.service
+          sudo systemctl daemon-reload
+          sudo service docker restart
 
-
-      - name: Attempt to curl Okta subdomain 100 times
-        run: docker run --network host node:12 bash -c "for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done"
+      - name: Print /lib/systemd/system/docker.service
+        run: sudo cat /lib/systemd/system/docker.service
