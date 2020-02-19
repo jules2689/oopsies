@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: ['https://wst.msedge.net', 'https://hk2.msedge.net', 'https://lon21.msedge.net', 'https://dev-698520.okta.com']
+        target: ['http://wst.msedge.net', 'http://hk2.msedge.net', 'http://lon21.msedge.net', 'https://dev-698520.okta.com']
+      fail-fast: false
+
     steps:
     - name: Checkout repo
       uses: actions/checkout@v1
