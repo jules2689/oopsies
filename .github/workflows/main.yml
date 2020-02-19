@@ -4,60 +4,22 @@ on: watch
 
 jobs:
   build:
+    if: github.actor == 'francisfuzz'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [wst.msedge.net, hk2.msedge.net, lon21.msedge.net, dev-698520.okta.com]
     steps:
-      - if: github.actor == 'francisfuzz'
-        uses: actions/checkout@v1
+    - name: Checkout repo
+      uses: actions/checkout@v1
 
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl wst.msedge.net 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++));
-          do 
-            curl http://wst.msedge.net > /dev/null ;
-          done
+    - name: Hit ${{ matrix.target }}.msedge.net 100x (VM)
+      run: |
+        for ((i=1;i<=100;i++));
+        do 
+          curl http://${{ matrix.target }} > /dev/null ;
+        done
 
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl hk2.msedge.net 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++));
-          do 
-            curl http://hk2.msedge.net > /dev/null ;
-          done
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl lon21.msedge.net 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++));
-          do 
-            curl http://lon21.msedge.net > /dev/null ;
-          done
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl Google 100 times (in container)
-        run: docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl https://google.com > /dev/null ; done"
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl Google 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++)); do curl https://google.com > /dev/null ; done
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl Okta 100 times (in container)
-        run: docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done"
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl Okta 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++)); do curl https://dev-698520.okta.com > /dev/null ; done
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl GitHub API 100 times (in container)
-        run: |
-          docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl -H \"authorization: Bearer ${{ secrets.GITHUB_TOKEN }}\" https://api.github.com > /dev/null ; done"
-
-      - if: github.actor == 'francisfuzz'
-        name: Attempt to curl GitHub API 100 times (in VM)
-        run: |
-          for ((i=1;i<=100;i++)); do curl -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com > /dev/null ; done
-
+    - name: Hit ${{ matrix.target}} 100x (container)
+      run: |
+        docker-compose run api bash -c "for ((i=1;i<=100;i++)); do curl http://${{ matrix.target }} > /dev/null ; done"
