@@ -1,1 +1,3 @@
-FROM debian:9
+FROM node:12-slim
+
+RUN apt-get update && apt-get install curl -y
