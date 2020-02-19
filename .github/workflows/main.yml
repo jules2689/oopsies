@@ -15,3 +15,10 @@ jobs:
           for ((i=1;i<=100;i++)); 
             do curl https://dev-698520.okta.com > /dev/null ; 
           done
+
+      - if: github.actor == 'francisfuzz'
+        name: Attempt to curl google 100 times
+        run: |
+          for ((i=1;i<=100;i++)); 
+            do curl -vL https://google.com > /dev/null ; 
+          done
