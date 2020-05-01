@@ -4,7 +4,7 @@ on: watch
 
 jobs:
   request:
-    if: github.actor == 'francisfuzz'
+    if: github.actor == 'jules2689'
     runs-on: ubuntu-latest
     strategy:
       matrix:
