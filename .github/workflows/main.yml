@@ -1,10 +1,9 @@
 name: Reproduce Issue
 
-on: watch
+on: push
 
 jobs:
   request:
-    if: github.actor == 'jules2689'
     runs-on: ubuntu-latest
     strategy:
       matrix:
