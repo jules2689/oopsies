@@ -1,7 +1,6 @@
 version: "3.7"
 services:
-  dns:
-    - 8.8.8.8
+  dns: 8.8.8.8
   api:
     build:
       context: .
